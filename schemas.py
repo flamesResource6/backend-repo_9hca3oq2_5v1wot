@@ -14,8 +14,7 @@ Model name is converted to lowercase for the collection name:
 from pydantic import BaseModel, Field
 from typing import Optional
 
-# Example schemas (replace with your own):
-
+# Core user used for authentication
 class User(BaseModel):
     """
     Users collection schema
@@ -23,8 +22,7 @@ class User(BaseModel):
     """
     name: str = Field(..., description="Full name")
     email: str = Field(..., description="Email address")
-    address: str = Field(..., description="Address")
-    age: Optional[int] = Field(None, ge=0, le=120, description="Age in years")
+    password_hash: str = Field(..., description="Salted password hash")
     is_active: bool = Field(True, description="Whether user is active")
 
 class Product(BaseModel):
@@ -35,8 +33,19 @@ class Product(BaseModel):
     title: str = Field(..., description="Product title")
     description: Optional[str] = Field(None, description="Product description")
     price: float = Field(..., ge=0, description="Price in dollars")
-    category: str = Field(..., description="Product category")
+    category: str = Field(..., description="Product category (slug or name)")
     in_stock: bool = Field(True, description="Whether product is in stock")
+    image_url: Optional[str] = Field(None, description="Image URL")
+
+class Category(BaseModel):
+    """
+    Categories collection schema
+    Collection name: "category"
+    """
+    name: str = Field(..., description="Display name")
+    slug: str = Field(..., description="URL-safe identifier")
+    description: Optional[str] = Field(None, description="Category description")
+    icon: Optional[str] = Field(None, description="Optional icon key for UI mapping")
 
 # Add your own schemas here:
 # --------------------------------------------------
